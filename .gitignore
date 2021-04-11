@@ -1,6 +1,7 @@
 # Adding config.py file
 config.py
 Weather_Data/config.py
+Vacation_Search/config.py
 
 # Adding additional files
 random_numbers.ipynb
