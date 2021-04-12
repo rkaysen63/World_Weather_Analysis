@@ -105,16 +105,16 @@
 
        city_data_df = pd.read_csv("../Weather_Database/WeatherPy_database.csv")  
        
-  * Then the user was asked to provide his/her minimum and maximum preferred temperatures.
+* Then the user was asked to provide his/her minimum and maximum preferred temperatures.
 
         min_temp = float(input("What is the minimum temperature you would like for your trip? "))
         max_temp = float(input("What is the maximum temperature you would like for your trip? "))
         
         preferred_cities_df = city_data_df.loc[(city_data_df["Max Temp"] <= max_temp) & (city_data_df["Max Temp"] >= min_temp)]
 
-  * Before moving forward, the preferred_cities_df was checked for empty rows using `preferred_cities_df.count()`.  "Country" had three empty rows which were subsequently dropped using `.dropna()`.  `clean_df = preferred_cities_df.dropna()`
+* Before moving forward, the preferred_cities_df was checked for empty rows using `preferred_cities_df.count()`.  "Country" had three empty rows which were subsequently dropped using `.dropna()`.  `clean_df = preferred_cities_df.dropna()`
 
-  * A new DataFrame was created to store the hotel names along with the city, country, maximum temperature and coordinates.
+* A new DataFrame was created to store the hotel names along with the city, country, maximum temperature and coordinates.
 
         hotel_df = clean_df[["City", "Country", "Max Temp", "Current Description", "Lat", "Lng"]].copy()
         hotel_df["Hotel Name"] = ""
@@ -143,7 +143,7 @@
   
     The hotel_df is checked and found to be clean.  In other words, none of the rows were missing hotels.  The "clean" DataFrame, `clean_hotel_df = hotel_df` was then exported to an output file, "WeatherPy_vacation.csv" for use later to develop the Travel Itinerary Map.
     
-  * From `clean_hotel_df`, a Customer Travel Destinations Map was created that includes markers with an information box pop-up that provides the hotel name, city, country, current weather and maximum temperature information.    
+* From `clean_hotel_df`, a Customer Travel Destinations Map was created that includes markers with an information box pop-up that provides the hotel name, city, country, current weather and maximum temperature information.    
 
         info_box_template = """
         <dl>
