@@ -24,7 +24,7 @@
 ### Retrieve Weather Data
 
 <p align="center">
-  <img src="Weather_Database/city_data_df.png" width="500">
+  <img src="Weather_Database/city_data_df.png" width="800">
 </p>
 
 * Cities throughout the world were selected at random.  
@@ -99,7 +99,9 @@
 
 ### Create A Customer Travel Destinations Map
 
-(add screenshot with markers and info boxes.)
+<p align="center">
+  <img src="Vacation_Search/WeatherPy_vacation_map.png" width="800">
+</p>
 
 * In order to create a customer travel destinations map, a filtered DataFrame based on customer temperature preferres was created from filtering the city_data using the `.loc` method. But first, pandas, requests, gmap, the Google API key and the database, WeatherPy_Database,csv were imported.  
 
@@ -163,6 +165,10 @@
 
 ### Create a Customer Travel Itinerary Map
 
+
+<p align="center">
+  <img src="Vacation_Itinerary/WeatherPy_travel_map_markers.png" width="800">
+</p>
 
 
 ### Scatter Plots and Linear Regression
