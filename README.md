@@ -12,7 +12,7 @@
 * [Results](https://github.com/rkaysen63/World_Weather_Analysis/master/README.md#results)
 
 ## Overview:
-"PlanMyTrip", is an online travel app that helps customers locate lodging anywhere in the world.  They want to improve their user interface by allowing customers to define their preferred temperature range, in order to generate map of hotels around the world that meet their criteria.  The map will have interactive markers that will allow the customer to select and view the following information: hotel, city, country, weather description and maximum temperature. 
+"PlanMyTrip", is an online travel app that helps customers locate lodging anywhere in the world.  They want to improve their user interface by allowing customers to define their preferred temperature range, in order to generate a map of hotels around the world that meet their criteria.  The map will have interactive markers that will allow the customer to select and view the following information about each marker location: hotel, city, country, weather description and maximum temperature. 
 
 ## Resources
 
