@@ -21,7 +21,7 @@
 * Lesson Plan: UTA-VIRT-DATA-PT-02-2021-U-B-TTH, Module 6 Challenge
 
 ## Results:
-### Create Weather Database
+### Weather Database
 
 <p align="center">
   <img src="Weather_Database/city_data_df.png" width="800">
