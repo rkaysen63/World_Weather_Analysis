@@ -8,8 +8,8 @@
 
 ## Table of Contents
 * [Overview](https://github.com/rkaysen63/World_Weather_Analysis/blob/master/README.md#overview)
-* [Resources](https://github.com/rkaysen63/World_Weather_Analysis/master/README.md#resources)
-* [Results](https://github.com/rkaysen63/World_Weather_Analysis/master/README.md#results)
+* [Resources](https://github.com/rkaysen63/World_Weather_Analysis/blob/master/README.md#resources)
+* [Results](https://github.com/rkaysen63/World_Weather_Analysis/blob/master/README.md#results)
 
 ## Overview:
 "PlanMyTrip", is an online travel app that helps customers locate lodging anywhere in the world.  They want to improve their user interface by allowing customers to define their preferred temperature range, in order to generate a map of hotels around the world that meet their criteria.  The map will have interactive markers that will allow the customer to select and view the following information about each marker location: hotel, city, country, weather description and maximum temperature. 
@@ -24,6 +24,9 @@
 
 ## Results:
 ### Retrieve Weather Data
+
+(insert image of city_data_df)
+
 * Cities throughout the world were selected at random.  
   * The `numpy` dependency was imported and random latitude, longitude pairs were created using `numpy.random`.  
 
@@ -89,14 +92,15 @@
         import pandas as pd
         city_data_df = pd.DataFrame(city_data)
 
-(insert image of city_data_df)
-
   * Create the output file (CSV), WeatherPy_Database.csv, which will become the weather database.
         
         output_data_file = "WeatherPy_Database.csv"
         city_data_df.to_csv(output_data_file, index_label="City_ID")
 
 ### Create A Customer Travel Destinations Map
+
+(add screenshot with markers and info boxes.)
+
 * In order to create a customer travel destinations map, a filtered DataFrame based on customer temperature preferres was created from filtering the city_data using the `.loc` method. But first, pandas, requests, gmap, the Google API key and the database, WeatherPy_Database,csv were imported.  
 
        city_data_df = pd.read_csv("../Weather_Database/WeatherPy_database.csv")  
@@ -157,8 +161,6 @@
         fig.add_layer(marker_layer)
         fig
 
-(add screenshot with markers and info boxes.)
-  
 ### Create a Customer Travel Itinerary Map
 
 
