@@ -103,7 +103,7 @@
   <img src="Vacation_Search/WeatherPy_vacation_map.png" width="800">
 </p>
 
-* In order to create the *Customer Travel Destinations Map*, a filtered DataFrame based on user temperature preferrences was created from filtering the city_data using the `.loc` method. But first, pandas, requests, gmap, the Google API key and the database, "WeatherPy_Database.csv" were imported.  
+* In order to create the *Customer Travel Destinations Map*, a filtered DataFrame based on user temperature preferences was created from filtering the city_data using the `.loc` method. But first, pandas, requests, gmap, the Google API key and the database, "WeatherPy_Database.csv" were imported.  
 
        city_data_df = pd.read_csv("../Weather_Database/WeatherPy_database.csv")  
        
