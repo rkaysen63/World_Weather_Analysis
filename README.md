@@ -1,10 +1,8 @@
 # World_Weather_Analysis
 
 <p align="center">
-  <img src="weather_data/Fig1.png" width="500">
+  <img src="weather_data/US_heatmap_cloudiness.png" width="800">
 </p>
-
-(swap out image for heatmap)
 
 ## Table of Contents
 * [Overview](https://github.com/rkaysen63/World_Weather_Analysis/blob/master/README.md#overview)
@@ -25,7 +23,9 @@
 ## Results:
 ### Retrieve Weather Data
 
-(insert image of city_data_df)
+<p align="center">
+  <img src="Weather_Database/city_data_df.png" width="500">
+</p>
 
 * Cities throughout the world were selected at random.  
   * The `numpy` dependency was imported and random latitude, longitude pairs were created using `numpy.random`.  
@@ -163,5 +163,58 @@
 
 ### Create a Customer Travel Itinerary Map
 
+
+
+### Scatter Plots and Linear Regression
+
+<p align="center">
+  <img src="weather_data/LinRegressNHemi.png" width="500">
+</p>
+
+Image shown above is a scatterplot showing the correlation of Maximum Temperature versus City Latitudes in the Northern Hemisphere.  The r value of this linear regression model is -0.9035, r^2 = 0.82 or 82%, which indicates that the linear regression fits the observed data very well.  
+
+First I imported linregress from scipy.stats.  Then I created a function to perform the linear regression on the weather data and plot a regression line and equation with the data.  Then I created the data set.  For the example above, I created a DataFrame for weather data for cities in the Northern Hemisphere using `.loc` to locate only cities with latitudes >= 0.  Then 
+
+    city_data_df = pd.read_csv("weather_data/cities.csv")
+
+    import matplotlib.pyplot as plt
+    from scipy.stats import linregress
+
+    def plot_linear_regression(x_values, y_values, title, y_label, text_coordinates):
+
+        # Run regression on hemisphere weather data.
+        (slope, intercept, r_value, p_value, std_err) = linregress(x_values, y_values)
+
+        # Calculate the regression line "y values" from the slope and intercept.
+        regress_values = x_values * slope + intercept
+    
+        # Get the equation of the line.
+        line_eq = "y = " + str(round(slope,2)) + "x + " + str(round(intercept,2))
+    
+        # Create a scatter plot and plot the regression line.
+        plt.scatter(x_values,y_values)
+        plt.plot(x_values,regress_values,"r")
+    
+        # Annotate the text for the line equation.
+        plt.annotate(line_eq, text_coordinates, fontsize=15, color="red")
+        plt.xlabel('Latitude')
+        plt.ylabel(y_label)
+        plt.title(title)
+        plt.show()         
+        
+    # Create DataFrame to hold weather data for cities in Northern Hemisphere
+    northern_hemi_df = city_data_df.loc[(city_data_df["Lat"] >= 0)]
+        
+    # Linear regression on the Northern Hemisphere Max Temps
+    x_values = northern_hemi_df["Lat"]
+    y_values = northern_hemi_df["Max Temp"]
+    
+    # Call the function.
+    plot_linear_regression(x_values, y_values,  
+        "Linear Regression on the Northern Hemisphere \nfor Maximum Temperature", 'Max Temp',(10,40))
+        
+    # Show results
+    linregress(x_values,y_values)
+        
 
 [Back to the Table of Contents](https://github.com/rkaysen63/World_Weather_Analysis/blob/master/README.md#table-of-contents)
