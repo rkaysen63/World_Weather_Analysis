@@ -166,7 +166,7 @@
 ### Customer Travel Itinerary Map
 
 <p align="center">
-  <img src="Vacation_Itinerary/WeatherPy_travel_map_markers.png" width="800">
+  <img src="Vacation_Itinerary/WeatherPy_travel_map.png" width="800">
 </p>
 
 The user was interested in a Florida vacation and an itinerary was created for travel between four Florida cities.  
