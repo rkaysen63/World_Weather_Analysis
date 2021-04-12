@@ -91,7 +91,74 @@
 
 (insert image of city_data_df)
 
+  * Create the output file (CSV), WeatherPy_Database.csv, which will become the weather database.
+        
+        output_data_file = "WeatherPy_Database.csv"
+        city_data_df.to_csv(output_data_file, index_label="City_ID")
+
 ### Create A Customer Travel Destinations Map
+* In order to create a customer travel destinations map, a filtered DataFrame based on customer temperature preferres was created from filtering the city_data using the `.loc` method. But first, pandas, requests, gmap, the Google API key and the database, WeatherPy_Database,csv were imported.  
+
+       city_data_df = pd.read_csv("../Weather_Database/WeatherPy_database.csv")  
+       
+  * Then the user was asked to provide his/her minimum and maximum preferred temperatures.
+
+        min_temp = float(input("What is the minimum temperature you would like for your trip? "))
+        max_temp = float(input("What is the maximum temperature you would like for your trip? "))
+        
+        preferred_cities_df = city_data_df.loc[(city_data_df["Max Temp"] <= max_temp) & (city_data_df["Max Temp"] >= min_temp)]
+
+  * Before moving forward, the preferred_cities_df was checked for empty rows using `preferred_cities_df.count()`.  "Country" had three empty rows which were subsequently dropped using `.dropna()`.  `clean_df = preferred_cities_df.dropna()`
+
+  * A new DataFrame was created to store the hotel names along with the city, country, maximum temperature and coordinates.
+
+        hotel_df = clean_df[["City", "Country", "Max Temp", "Current Description", "Lat", "Lng"]].copy()
+        hotel_df["Hotel Name"] = ""
+        
+    At this point, the hotel column is empty.  The hotels with 5000 meter radius will be added by iterating through the hotel_df and making a request from Google Directions API.  Note that the `try` and `except` are use to prevent the loop from stopping if a hotel isn't found.
+
+            params = {
+            "radius": 5000,
+            "type": "lodging",
+            "key": g_key
+        }
+
+        for index, row in hotel_df.iterrows():
+            lat = row["Lat"]
+            lng = row["Lng"]
+            
+            params["location"] = f"{lat},{lng}"
+            
+            base_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"    
+            hotels = requests.get(base_url, params=params).json()  
+            
+            try:
+                hotel_df.loc[index, "Hotel Name"] = hotels["results"][0]["name"]
+            except (IndexError):
+               print("Hotel not found... skipping.")
+  
+    The hotel_df is checked and found to be clean.  In other words, none of the rows were missing hotels.  The "clean" DataFrame, `clean_hotel_df = hotel_df` was then exported to an output file, "WeatherPy_vacation.csv" for use later to develop the Travel Itinerary Map.
+    
+  * From `clean_hotel_df`, a Customer Travel Destinations Map was created that includes markers with an information box pop-up that provides the hotel name, city, country, current weather and maximum temperature information.    
+
+        info_box_template = """
+        <dl>
+        <dt>Hotel Name</dt><dd>{Hotel Name}</dd>
+        <dt>City</dt><dd>{City}</dd>
+        <dt>Country</dt><dd>{Country}</dd>
+        <dt>Current Weather</dt><dd>{Current Description} and {Max Temp} °F</dd>
+        </dl> 
+        """
+        
+        hotel_info = [info_box_template.format(**row) for index, row in clean_hotel_df.iterrows()]
+        locations = clean_hotel_df[["Lat", "Lng"]]
+        fig = gmaps.figure(center=(30.0, 31.0), zoom_level=1.5)
+        marker_layer = gmaps.marker_layer(locations, info_box_content=hotel_info)
+        fig.add_layer(marker_layer)
+        fig
+
+(add screenshot with markers and info boxes.)
+  
 ### Create a Customer Travel Itinerary Map
 
 
