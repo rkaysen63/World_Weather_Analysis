@@ -10,7 +10,7 @@
 * [Results](https://github.com/rkaysen63/World_Weather_Analysis/blob/master/README.md#results)
 
 ## Overview:
-"PlanMyTrip", is an online travel app that helps customers locate lodging anywhere in the world.  They want to improve their user interface by allowing customers to define their preferred temperature range, in order to generate a map of hotels around the world that meet their criteria.  The map will have interactive markers that will allow the customer to select and view the following information about each marker location: hotel, city, country, weather description and maximum temperature. 
+"PlanMyTrip", is an online travel app that helps users to locate lodging anywhere in the world.  They want to improve their user interface by allowing users to define their preferred temperature range, in order to generate a map of hotels in cities around the world meeting that criteria.  The map will have interactive markers that will allow the user to select and view the following information about each marker location: hotel, city, country, weather description and maximum temperature. 
 
 ## Resources
 
@@ -21,7 +21,7 @@
 * Lesson Plan: UTA-VIRT-DATA-PT-02-2021-U-B-TTH, Module 6 Challenge
 
 ## Results:
-### Retrieve Weather Data
+### Create Weather Database
 
 <p align="center">
   <img src="Weather_Database/city_data_df.png" width="800">
@@ -44,7 +44,7 @@
             if city not in cities:  
                 cities.append(city)
 
-  * Then iterate through the list of cities and make an API request for each city to gather weather data.
+  * Weather data by city was gathered by iterating through the list of cities and making an API request for each city's weather data from the OpenWeatherAPI.
 
         import requests
         from config import weather_api_key
@@ -86,28 +86,28 @@
                 print("City not found. Skipping...")
                 pass
 
-* Create a DataFrame and export to a file (CSV).  
-  * Convert the array of dictionaries to a Pandas DataFrame.
+* The weather data was converted into a DataFrame, city_data_df and export to a file (CSV), "WeatherPy_Database.csv" for future use.  
+  * The array of dictionaries was converted into a Pandas DataFrame.
 
         import pandas as pd
         city_data_df = pd.DataFrame(city_data)
 
-  * Create the output file (CSV), WeatherPy_Database.csv, which will become the weather database.
+  * Then the output file, "WeatherPy_Database.csv", which will become the weather database, was created from the DataFrame above.
         
         output_data_file = "WeatherPy_Database.csv"
         city_data_df.to_csv(output_data_file, index_label="City_ID")
 
-### Create A Customer Travel Destinations Map
+### Customer Travel Destinations Map
 
 <p align="center">
   <img src="Vacation_Search/WeatherPy_vacation_map.png" width="800">
 </p>
 
-* In order to create a customer travel destinations map, a filtered DataFrame based on customer temperature preferres was created from filtering the city_data using the `.loc` method. But first, pandas, requests, gmap, the Google API key and the database, WeatherPy_Database,csv were imported.  
+* In order to create the *Customer Travel Destinations Map*, a filtered DataFrame based on user temperature preferrences was created from filtering the city_data using the `.loc` method. But first, pandas, requests, gmap, the Google API key and the database, "WeatherPy_Database.csv" were imported.  
 
        city_data_df = pd.read_csv("../Weather_Database/WeatherPy_database.csv")  
        
-* Then the user was asked to provide his/her minimum and maximum preferred temperatures.
+* The user was asked to provide his/her minimum and maximum preferred temperatures.
 
         min_temp = float(input("What is the minimum temperature you would like for your trip? "))
         max_temp = float(input("What is the maximum temperature you would like for your trip? "))
@@ -121,7 +121,7 @@
         hotel_df = clean_df[["City", "Country", "Max Temp", "Current Description", "Lat", "Lng"]].copy()
         hotel_df["Hotel Name"] = ""
         
-    At this point, the hotel column is empty.  The hotels with 5000 meter radius will be added by iterating through the hotel_df and making a request from Google Directions API.  Note that the `try` and `except` are use to prevent the loop from stopping if a hotel isn't found.
+    At this point, the hotel column was empty.  The hotels within a 5000 meter radius of the latitude, longitude pairs were added by iterating through the hotel_df and making a request from Google Directions API.  Note that `try` and `except` are use to prevent the loop from stopping if a hotel isn't found.
 
             params = {
             "radius": 5000,
@@ -143,9 +143,9 @@
             except (IndexError):
                print("Hotel not found... skipping.")
   
-    The hotel_df is checked and found to be clean.  In other words, none of the rows were missing hotels.  The "clean" DataFrame, `clean_hotel_df = hotel_df` was then exported to an output file, "WeatherPy_vacation.csv" for use later to develop the Travel Itinerary Map.
+    The hotel_df was checked and found to be clean.  In other words, none of the rows were missing hotels.  The "clean" DataFrame, `clean_hotel_df = hotel_df` was then exported to an output file, "WeatherPy_vacation.csv" for use later to develop the Travel Itinerary Map.
     
-* From `clean_hotel_df`, a Customer Travel Destinations Map was created that includes markers with an information box pop-up that provides the hotel name, city, country, current weather and maximum temperature information.    
+* From the `clean_hotel_df`, a *Customer Travel Destinations Map* was created that includes markers with an information box that opens when selected that provides the hotel name, city, country, current weather and maximum temperature information.    
 
         info_box_template = """
         <dl>
@@ -163,13 +163,59 @@
         fig.add_layer(marker_layer)
         fig
 
-### Create a Customer Travel Itinerary Map
-
+### Customer Travel Itinerary Map
 
 <p align="center">
   <img src="Vacation_Itinerary/WeatherPy_travel_map_markers.png" width="800">
 </p>
 
+The user was interested in a Florida vacation and an itinerary was created for travel between four Florida cities.  
+
+* "WeatherPy_vacation.csv," was imported as vacation_df, as well as pandas, requests, gmap, and the Google API key#. From vacation_df, DataFrames were created for each city in the itinerary using the `.loc` on the "City" names.
+
+      vacation_start = vacation_df.loc[vacation_df["City"] == "Saint Pete Beach"]
+      vacation_end = vacation_df.loc[vacation_df["City"] =="Saint Pete Beach"]
+      vacation_stop1 = vacation_df.loc[vacation_df["City"] =="Jacksonville"]
+      vacation_stop2 = vacation_df.loc[vacation_df["City"] =="Labelle"] 
+      vacation_stop3 = vacation_df.loc[vacation_df["City"] =="Palmetto"] 
+    
+* Then latitude-longitude pairs as tuples were retrieved from each city DataFrame using the to_numpy function and list indexing.
+
+      start = vacation_start["Lat"].to_numpy()[0], vacation_start["Lng"].to_numpy()[0]
+      end = vacation_end["Lat"].to_numpy()[0], vacation_end["Lng"].to_numpy()[0]
+      stop1 = vacation_stop1["Lat"].to_numpy()[0], vacation_stop1["Lng"].to_numpy()[0]
+      stop2 = vacation_stop2["Lat"].to_numpy()[0], vacation_stop2["Lng"].to_numpy()[0]
+      stop3 = vacation_stop3["Lat"].to_numpy()[0], vacation_stop3["Lng"].to_numpy()[0]
+
+* A direction layer map was created using gmaps and the start and end latitude-longitude pairs with stop1, stop2, and stop3 as the waypoints.
+
+      import gmaps.datasets
+      gmaps.configure(api_key=g_key)
+      itinerary = gmaps.directions_layer(start, end, waypoints=[stop1, stop2, stop3], travel_mode='DRIVING')
+      fig.add_layer(itinerary)
+      fig
+
+* In order to create a marker layer map between the four cities the four city DataFrames were combined into a single DataFrame, itinerary_df, using the concat() function.  The remaining code to add markers is similar to the code found in the section *Customer Travel Destinations Map* above, except that the data set has changed to four specific cities identified by the combined DataFrame, itinerary_df.
+
+      destination_frames = [vacation_start, vacation_stop1, vacation_stop2, vacation_stop3, vacation_end]
+      itinerary_df = pd.concat(destination_frames,ignore_index=True)
+
+      info_box_template = """
+
+      <dl>
+      <dt>Hotel Name</dt><dd>{Hotel Name}</dd>
+      <dt>City</dt><dd>{City}</dd>
+      <dt>Country</dt><dd>{Country}</dd>
+      <dt>Current Weather</dt><dd>{Current Description} and {Max Temp} °F</dd>
+      </dl> 
+      """
+
+      hotel_info = [info_box_template.format(**row) for index, row in itinerary_df.iterrows()]
+      locations = itinerary_df[["Lat", "Lng"]]
+      fig = gmaps.figure(center=(30.0, 31.0), zoom_level=1.5)
+      marker_layer = gmaps.marker_layer(locations, info_box_content=hotel_info)
+      fig.add_layer(marker_layer)
+      fig
 
 ### Scatter Plots and Linear Regression
 
@@ -177,7 +223,7 @@
   <img src="weather_data/LinRegressNHemi.png" width="500">
 </p>
 
-Image shown above is a scatterplot showing the correlation of Maximum Temperature versus City Latitudes in the Northern Hemisphere.  The r value of this linear regression model is -0.9035, r^2 = 0.82 or 82%, which indicates that the linear regression fits the observed data very well.  
+Image shown above is a scatterplot with linear regression showing the correlation of Maximum Temperature versus City Latitudes in the Northern Hemisphere.  The r value of this linear regression model is -0.9035, r^2 = 0.82 or 82%, which indicates that the linear regression fits the observed data very well.  
 
 First I imported linregress from scipy.stats.  Then I created a function to perform the linear regression on the weather data and plot a regression line and equation with the data.  Then I created the data set.  For the example above, I created a DataFrame for weather data for cities in the Northern Hemisphere using `.loc` to locate only cities with latitudes >= 0.  Then 
 
